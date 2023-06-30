@@ -10,6 +10,7 @@ import { Layout, Menu, Button, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
 import { Speech } from "./Speech";
 import { MyTable } from "./Mytable";
+import { Service } from "./service";
 
 const { Header, Sider, Content } = Layout;
 
@@ -70,6 +71,17 @@ const App: React.FC = () => {
           <Layout>
             <Speech />
             <MyTable />
+            <Button
+              onClick={() => {
+                Service.getForm().then((res) => {
+                  console.log(res);
+                  const formData = res.data.data;
+                  console.log(formData);
+                });
+              }}
+            >
+              获取表格信息
+            </Button>
           </Layout>
         </Content>
         <Footer style={{ textAlign: "center" }}>
