@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { IMyTable } from "./Mytable";
 
 const BASEURL = "http://127.0.0.1:4523/m1/2947154-0-default";
 
@@ -44,7 +45,7 @@ async function GlobalAxios<T = any, D = any>(
 export const Service = {
   //获取表格
   getForm() {
-    return GlobalAxios<{}>("post", "/formdata", null);
+    return GlobalAxios<IMyTable>("post", "/formdata", null);
   },
 };
 
