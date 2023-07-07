@@ -1,5 +1,5 @@
 import { Button, Layout } from "antd";
-import { Speech } from "../../Speech";
+import { Speech, Speech1 } from "../../Speech";
 import { IMyTable, MyTable } from "../../Mytable";
 import { useState } from "react";
 import { Service } from "../../service";
@@ -43,6 +43,7 @@ export function DisplayPage() {
 
   return (
     <Layout>
+      <Speech1 />
       <Speech />
       <MyTable formColumns={form?.formColumns} formData={form?.formData} />
       <Button
