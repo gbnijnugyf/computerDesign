@@ -50,7 +50,7 @@ export function MainPage() {
           style={{
             margin: "24px 16px",
             padding: 24,
-            minHeight: "80vh",
+            minHeight: "60vh",
             background: colorBgContainer,
           }}
         >

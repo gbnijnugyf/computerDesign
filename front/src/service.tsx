@@ -21,11 +21,11 @@ async function GlobalAxios<T = any, D = any>(
   const parsedURL = new URL(BASEURL + url);
   //   const parsedURL = parse(url);
 
-//   console.log(parsedURL);
+  //   console.log(parsedURL);
   const params = new URLSearchParams(parsedURL.searchParams || "");
   console.log(url)
   console.log(parsedURL)
-//   url = parsedURL.pathname || "";
+  //   url = parsedURL.pathname || "";
   console.log(url)
 
   config.params = params;
@@ -45,8 +45,13 @@ async function GlobalAxios<T = any, D = any>(
 export const Service = {
   //获取表格
   getForm() {
-    return GlobalAxios<IMyTable>("post", "/formdata", null);
+    return GlobalAxios<IMyTable>("post", "/getformdata", null);
   },
+
+  //上传表格
+  postForm(props: FormData) {
+    return GlobalAxios<string>("post", "/postformdata", props);
+  }
 };
 
 // axios({
