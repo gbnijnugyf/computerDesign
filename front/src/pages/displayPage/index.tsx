@@ -1,8 +1,8 @@
 import { Button, Layout } from "antd";
-import { Speech } from "../../Speech";
-import { IMyTable, MyTable } from "../../Mytable";
+import { IMyTable, MyTable } from "../../component/Mytable";
 import { useState } from "react";
 import { Service } from "../../service";
+import { Speech } from "../../component/Speech";
 
 const formInit: IMyTable = {
   formColumns: [

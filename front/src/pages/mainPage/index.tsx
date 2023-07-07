@@ -20,7 +20,7 @@ export function MainPage() {
   const navigate = useNavigate();
 
   return (
-    <Layout>
+    <Layout style={{height:"100vh"}}>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="demo-logo-vertical" />
         <Menu
@@ -50,7 +50,7 @@ export function MainPage() {
           style={{
             margin: "24px 16px",
             padding: 24,
-            minHeight: 600,
+            minHeight: "80vh",
             background: colorBgContainer,
           }}
         >

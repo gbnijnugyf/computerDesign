@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { IMyTable } from "./Mytable";
+import { IMyTable } from "./component/Mytable";
 
 const BASEURL = "http://127.0.0.1:4523/m1/2947154-0-default";
 
