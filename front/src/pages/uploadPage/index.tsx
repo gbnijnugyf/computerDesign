@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, { useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
 import { Progress, Upload, message } from 'antd';
@@ -70,7 +70,7 @@ export function UploadPage() {
                 Support for a <strong>single upload</strong>. Strictly prohibited from uploading company data or other
                 banned files.
             </p>
-            <Progress percent={progress} />
+            {progress > 0 ? <Progress percent={progress} /> : null}
         </Dragger>
     )
 }
