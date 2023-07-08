@@ -26,7 +26,7 @@ export function MainPage() {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["display"]}
+          defaultSelectedKeys={["upload"]}
           onClick={(props) =>
             props.key.length !== 0 ? navigate(props.key) : null
           }

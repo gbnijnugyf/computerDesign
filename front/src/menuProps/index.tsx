@@ -1,23 +1,30 @@
 import {
+  DiffOutlined,
+  SnippetsOutlined,
+  UnorderedListOutlined,
   UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
 } from "@ant-design/icons";
 
 export const LeftSider = [
   {
-    key: "display",
-    icon: <UserOutlined />,
-    label: "表格展示",
-  },
-  {
+    
     key: "upload",
-    icon: <VideoCameraOutlined />,
+    icon: <UploadOutlined />,
     label: "表格上传",
   },
   {
+    key: "display",
+    icon: <SnippetsOutlined />,
+    label: "表格展示",
+  },
+  {
+    key: "data-handle",
+    icon: <DiffOutlined />,
+    label: "数据处理结果",
+  },
+  {
     key: "else",
-    icon: <UploadOutlined />,
+    icon: <UnorderedListOutlined />,
     label: "其他",
   },
 ];

@@ -37,13 +37,13 @@ export function Speech() {
     <div className="microphone-wrapper">
       {transcript && <div className="microphone-result-text">{transcript}</div>}
       <Button ref={microphoneRef} onClick={handleListing}>
-        {isListening ? "Listening......" : "Click to start Listening"}
+        {isListening ? "倾听中......" : "点击开始倾听"}
       </Button>
       <Button onClick={stopHandle} disabled={isListening ? false : true}>
-        Stop
+        暂停
       </Button>
       <Button onClick={handleReset} disabled={transcript ? false : true}>
-        Reset
+        重置
       </Button>
     </div>
   );
