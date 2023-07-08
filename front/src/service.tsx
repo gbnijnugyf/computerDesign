@@ -1,20 +1,26 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { IMyTable } from "./component/Mytable";
 
-const BASEURL = "http://127.0.0.1:4523/m1/2947154-0-default";
+export const BASEURL = "http://127.0.0.1:4523/m1/2947154-0-default";
 
 // 返回响应中data的类型
-interface IGlobalResponse<T> {
+export interface IGlobalResponse<T> {
   data: T;
   msg: string;
   status: number;
 }
+
+
+
 
 async function GlobalAxios<T = any, D = any>(
   method: "post",
   url: string,
   data: D
 ): Promise<AxiosResponse<IGlobalResponse<T>, any>> {
+
+
+
   let config: AxiosRequestConfig<D> = {};
   config.baseURL = BASEURL;
 
@@ -23,16 +29,11 @@ async function GlobalAxios<T = any, D = any>(
 
   //   console.log(parsedURL);
   const params = new URLSearchParams(parsedURL.searchParams || "");
-  console.log(url)
-  console.log(parsedURL)
   //   url = parsedURL.pathname || "";
-  console.log(url)
-
   config.params = params;
-
-  console.log(config);
   let response;
-  response = await axios[method]<IGlobalResponse<T>>(url, data, config);
+
+  response = await axios[method]<IGlobalResponse<T>>(url, data, config)
 
   if (response.statusText === "OK") {
     return response;
@@ -50,9 +51,10 @@ export const Service = {
 
   //上传表格
   postForm(props: FormData) {
-    return GlobalAxios<string>("post", "/postformdata", props);
+    return GlobalAxios<string, FormData>("post", "/postformdata", props);
   }
 };
+
 
 // axios({
 //     url: "/formdata",

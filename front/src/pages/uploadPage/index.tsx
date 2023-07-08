@@ -1,14 +1,14 @@
-import React from 'react';
+import React, {useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
-import { Upload, message } from 'antd';
-import { Service } from '../../service';
+import { Progress, Upload, message } from 'antd';
+import { BASEURL, IGlobalResponse } from '../../service';
+import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 
 export function UploadPage() {
-
+    const [progress, setProgress] = useState<number>(0);
     const acceptType = ["xlsx", "xls", "csv"];
     function isAcceptedType(type: string): boolean {
-        console.log(type);
         let flag: boolean = false;
         acceptType.forEach((t) => {
             if ((t === type)) {
@@ -19,19 +19,29 @@ export function UploadPage() {
     }
 
     async function customRequest(props: any) {
-        console.log(props);
         const fileName: string = props.file.name;
         const fileNameSplit = fileName.split('.');
         const fileType = fileNameSplit[fileNameSplit.length - 1];
         if (isAcceptedType(fileType)) {
-            console.log("type right")
-
             const form = new FormData();
             form.append('file', props.file);
             // form 对象 就是我们上传接口需要的参数 
             // 调用api接口进行请求 , uploadFile 是走我们封装的 请求的 , 请求头 token 都包含
-            const res = await Service.postForm(form);
-            console.log((res))
+            let config: AxiosRequestConfig<FormData> = {};
+            config.baseURL = BASEURL;
+            const parsedURL = new URL(BASEURL + "/postformdata");
+            const params = new URLSearchParams(parsedURL.searchParams || "");
+            config.params = params;
+            config.onUploadProgress = (progress: AxiosProgressEvent) => {
+                if (progress.total) {
+                    setProgress(Math.floor(progress.loaded / progress.total * 100));
+                }
+            }
+            await axios["post"]<IGlobalResponse<string>>("/postformdata", props, config).then((res) => {
+                message.success(`${fileName} file uploaded successfully.`);
+            }).catch(() => {
+                message.error(`NetWork Error`);
+            });
 
         } else {
             message.error(`file type error!`)
@@ -45,23 +55,7 @@ export function UploadPage() {
     const props: UploadProps = {
         name: 'file',
         multiple: false,
-        showUploadList: false, 
-        // action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        // onChange(info) {
-        //     const { status } = info.file;
-        //     console.log(info)
-        //     if (status !== 'uploading') {
-        //         console.log(info.file, info.fileList);
-        //     }
-        //     if (status === 'done') {
-        //         message.success(`${info.file.name} file uploaded successfully.`);
-        //     } else if (status === 'error') {
-        //         message.error(`${info.file.name} file upload failed.`);
-        //     }
-        // },
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
-        },
+        showUploadList: false,
 
         customRequest: customRequest,
     };
@@ -76,6 +70,7 @@ export function UploadPage() {
                 Support for a <strong>single upload</strong>. Strictly prohibited from uploading company data or other
                 banned files.
             </p>
+            <Progress percent={progress} />
         </Dragger>
     )
 }
