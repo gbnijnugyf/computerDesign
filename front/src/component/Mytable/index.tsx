@@ -150,7 +150,7 @@ export function MyTable(props: IMyTable): JSX.Element {
       <VirtualTable
         columns={props.formColumns}
         dataSource={props.formData}
-        scroll={{ y: 470, x: "10vw" }}
+        scroll={{ y: 300, x: "10vw" }}
       />
     </>
   );

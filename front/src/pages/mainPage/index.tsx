@@ -33,7 +33,7 @@ export function MainPage() {
           items={LeftSider}
         />
       </Sider>
-      <Layout>
+      <Layout style={{height:"100vh"}}>
         <Header style={{ padding: 0, background: colorBgContainer }}>
           <Button
             type="text"
@@ -48,8 +48,8 @@ export function MainPage() {
         </Header>
         <Content
           style={{
-            margin: "24px 16px",
-            padding: 24,
+            margin: "5vh 2vw",
+            padding: "3vw",
             minHeight: "60vh",
             background: colorBgContainer,
           }}

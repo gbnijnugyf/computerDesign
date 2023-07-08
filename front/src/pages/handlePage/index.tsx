@@ -5,22 +5,23 @@ import { Service } from "../../service";
 import { Speech } from "../../component/Speech";
 
 const formInit: IMyTable = {
-  formColumns: [
-    { title: "", dataIndex: "key" },
-    { title: "", dataIndex: "key" },
-    { title: "", dataIndex: "key" },
-    { title: "", dataIndex: "key" },
-    { title: "", dataIndex: "key" },
-    { title: "", dataIndex: "key" },
-  ],
-  formData: undefined,
+    formColumns: [
+        { title: "", dataIndex: "key" },
+        { title: "", dataIndex: "key" },
+        { title: "", dataIndex: "key" },
+        { title: "", dataIndex: "key" },
+        { title: "", dataIndex: "key" },
+        { title: "", dataIndex: "key" },
+    ],
+    formData: undefined,
 };
-export function HandlePage() {
-  
 
-  return (
-    <Layout>
-      
-    </Layout>
-  );
+export function HandlePage() {
+
+
+    return (
+        <Layout>
+
+        </Layout>
+    );
 }

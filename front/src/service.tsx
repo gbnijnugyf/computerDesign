@@ -49,9 +49,14 @@ export const Service = {
     return GlobalAxios<IMyTable>("post", "/getformdata", null);
   },
 
-  //上传表格
+  //上传表格-为了实现进度条，在Service外部实现
   postForm(props: FormData) {
     return GlobalAxios<string, FormData>("post", "/postformdata", props);
+  },
+
+  //发送语音文本信息
+  postSpeechText(props:string){
+    return GlobalAxios<string>("post", "/postspeech", props);
   }
 };
 

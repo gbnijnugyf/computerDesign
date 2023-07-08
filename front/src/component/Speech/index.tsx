@@ -3,7 +3,8 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import "./index.css";
-import { Button } from "antd";
+import { Button, message } from "antd";
+import { Service } from "../../service";
 
 export function Speech() {
   const { transcript, resetTranscript } = useSpeechRecognition();
@@ -16,23 +17,34 @@ export function Speech() {
       </div>
     );
   }
-  const handleListing = () => {
+  function handleListing() {
     setIsListening(true);
     microphoneRef.current.classList.add("listening");
     SpeechRecognition.startListening({
       continuous: true,
     });
   };
-  const stopHandle = () => {
+  function stopHandle() {
     setIsListening(false);
     console.log(transcript);
     microphoneRef.current.classList.remove("listening");
     SpeechRecognition.stopListening();
   };
-  const handleReset = () => {
+  function handleReset() {
     stopHandle();
     resetTranscript();
   };
+  function submitText(){
+    Service.postSpeechText(transcript).then((res)=>{
+      console.log(res)
+      message.success("发送数据处理请求成功！");
+    }).catch(()=>{
+      message.error("发送数据处理请求失败，请重试！");
+    })
+
+  }
+
+
   return (
     <div className="microphone-wrapper">
       {transcript && <div className="microphone-result-text">{transcript}</div>}
@@ -44,6 +56,9 @@ export function Speech() {
       </Button>
       <Button onClick={handleReset} disabled={transcript ? false : true}>
         重置
+      </Button>
+      <Button onClick={submitText} disabled={transcript ? false : true}>
+        处理数据
       </Button>
     </div>
   );
