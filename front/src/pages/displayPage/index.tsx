@@ -43,7 +43,7 @@ export function DisplayPage() {
 
   return (
     <Layout>
-      <Speech1 />
+      {/* <Speech1 /> */}
       <Speech />
       <MyTable formColumns={form?.formColumns} formData={form?.formData} />
       <Button

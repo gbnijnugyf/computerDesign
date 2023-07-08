@@ -45,7 +45,7 @@ async function GlobalAxios<T = any, D = any>(
 export const Service = {
   //获取表格
   getForm() {
-    return GlobalAxios<IMyTable>("post", "/formdata", null);
+    return GlobalAxios<IMyTable>("post", "/getformdata", null);
   },
 };
 

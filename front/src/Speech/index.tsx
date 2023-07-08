@@ -15,17 +15,18 @@ if (window.webkitSpeechRecognition) {
   speech = null;
 }
 export function Speech1() {
-  const [isListening, setIsListening] = useState(false);
+  const [isSpeeking, setIsSpeeking] = useState<boolean>(false);
   const [text, setText] = useState("");
-  const listen = () => {
-    setIsListening(!isListening);
-    if (isListening) {
-      speech.stop();
-      console.log(text)
-    } else {
-      speech.start();
-    }
+  const startListen = () => {
+    setIsSpeeking(true);
+    speech.start();
+    console.log(isSpeeking, "start")
   };
+  const stopListen = () => {
+    setIsSpeeking(false);
+    speech.stop();
+    console.log(isSpeeking, "stop")
+  }
 
   useEffect(() => {
     //handle if the browser does not support the Speech API
@@ -44,8 +45,11 @@ export function Speech1() {
         <h3>Click the Mic and say an author's name</h3>
         <div>
           <Button
-            onClick={listen}
-          >点我</Button>
+            onClick={startListen} disabled={isSpeeking}
+          >点我开始说话</Button>
+          <Button
+            onClick={stopListen} disabled={!isSpeeking}
+          >点我停止说话</Button>
         </div>
         <p>{text}</p>
       </div>
@@ -86,13 +90,13 @@ export function Speech() {
     <div className="microphone-wrapper">
       {transcript && <div className="microphone-result-text">{transcript}</div>}
       <Button ref={microphoneRef} onClick={handleListing}>
-        {isListening ? "Listening......" : "Click to start Listening"}
+        {isListening ? "倾听中......" : "点击开始倾听"}
       </Button>
       <Button onClick={stopHandle} disabled={isListening ? false : true}>
-        Stop
+        暂停
       </Button>
       <Button onClick={handleReset} disabled={transcript ? false : true}>
-        Reset
+        重置
       </Button>
     </div>
   );
