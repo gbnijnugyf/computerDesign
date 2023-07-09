@@ -34,13 +34,18 @@ export function Speech() {
     stopHandle();
     resetTranscript();
   };
-  function submitText(){
-    Service.postSpeechText(transcript).then((res)=>{
+  function submitText() {
+    const res = Service.postSpeechText({
+      text: transcript
+    });
+    // console.log(res)
+    res.then((res) => {
       console.log(res)
       message.success("发送数据处理请求成功！");
-    }).catch(()=>{
+    }).catch(() => {
       message.error("发送数据处理请求失败，请重试！");
     })
+
 
   }
 

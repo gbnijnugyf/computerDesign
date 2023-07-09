@@ -18,26 +18,51 @@ export function UploadPage() {
         return flag;
     }
 
-    async function customRequest(props: any) {
-        const fileName: string = props.file.name;
+    async function customRequest(data: any) {
+        console.log(data)
+        const fileName: string = data.file.name;
         const fileNameSplit = fileName.split('.');
         const fileType = fileNameSplit[fileNameSplit.length - 1];
         if (isAcceptedType(fileType)) {
             const form = new FormData();
-            form.append('file', props.file);
-            // form 对象 就是我们上传接口需要的参数 
-            // 调用api接口进行请求 , uploadFile 是走我们封装的 请求的 , 请求头 token 都包含
+            form.append('file', data.file);
+            console.log(form)
+
+            
             let config: AxiosRequestConfig<FormData> = {};
+
             config.baseURL = BASEURL;
             const parsedURL = new URL(BASEURL + "/postformdata");
             const params = new URLSearchParams(parsedURL.searchParams || "");
             config.params = params;
+
+            // config.headers = {
+            //     "Content-Type":"application/x-www-form-urlencoded",
+            //     "charset": "UTF-8"
+            // }
+
             config.onUploadProgress = (progress: AxiosProgressEvent) => {
                 if (progress.total) {
                     setProgress(Math.floor(progress.loaded / progress.total * 100));
                 }
             }
-            await axios["post"]<IGlobalResponse<string>>("/postformdata", props, config).then((res) => {
+            
+            // axios.defaults.baseURL = BASEURL
+
+            // await axios<IGlobalResponse<string>>({
+            //     method:"post",
+            //     url:"/postformdata",
+            //     data:form,
+            //     headers: { "Content-Type": "multipart/form-data"},
+            // }).then((res) => {
+            //     console.log(res)
+            //     message.success(`${fileName} file uploaded successfully.`);
+            // }).catch(() => {
+            //     message.error(`NetWork Error`);
+            // });
+
+            await axios["post"]<IGlobalResponse<string>>("/postformdata", form, config).then((res) => {
+                console.log(res)
                 message.success(`${fileName} file uploaded successfully.`);
             }).catch(() => {
                 message.error(`NetWork Error`);
@@ -56,7 +81,9 @@ export function UploadPage() {
         name: 'file',
         multiple: false,
         showUploadList: false,
-
+        onChange:(info)=>{
+            console.log(info)
+        },
         customRequest: customRequest,
     };
 
