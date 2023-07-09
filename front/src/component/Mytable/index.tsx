@@ -1,11 +1,13 @@
-import type { TableProps } from 'antd';
-import { Table, theme } from 'antd';
-import classNames from 'classnames';
-import ResizeObserver from 'rc-resize-observer';
-import React, { useEffect, useRef, useState } from 'react';
-import { VariableSizeGrid as Grid } from 'react-window';
+import type { TableProps } from "antd";
+import { Table, theme } from "antd";
+import classNames from "classnames";
+import ResizeObserver from "rc-resize-observer";
+import React, { useEffect, useRef, useState } from "react";
+import { VariableSizeGrid as Grid } from "react-window";
 
-const VirtualTable = <RecordType extends object>(props: TableProps<RecordType>) => {
+const VirtualTable = <RecordType extends object>(
+  props: TableProps<RecordType>
+) => {
   const { columns, scroll } = props;
   const [tableWidth, setTableWidth] = useState(0);
   const { token } = theme.useToken();
@@ -26,7 +28,7 @@ const VirtualTable = <RecordType extends object>(props: TableProps<RecordType>) 
   const [connectObject] = useState<any>(() => {
     const obj = {};
     // 为obj新增属性‘scrollLeft’
-    Object.defineProperty(obj, 'scrollLeft', {
+    Object.defineProperty(obj, "scrollLeft", {
       get: () => {
         if (gridRef.current) {
           return gridRef.current?.state?.scrollLeft;
@@ -43,7 +45,6 @@ const VirtualTable = <RecordType extends object>(props: TableProps<RecordType>) 
     return obj;
   });
 
-
   const resetVirtualGrid = () => {
     gridRef.current?.resetAfterIndices({
       columnIndex: 0,
@@ -53,7 +54,10 @@ const VirtualTable = <RecordType extends object>(props: TableProps<RecordType>) 
 
   useEffect(() => resetVirtualGrid, [tableWidth]);
 
-  const renderVirtualList = (rawData: readonly object[], { scrollbarSize, ref, onScroll }: any) => {
+  const renderVirtualList = (
+    rawData: readonly object[],
+    { scrollbarSize, ref, onScroll }: any
+  ) => {
     ref.current = connectObject;
     const totalHeight = rawData.length * 54;
 
@@ -64,7 +68,8 @@ const VirtualTable = <RecordType extends object>(props: TableProps<RecordType>) 
         columnCount={mergedColumns.length}
         columnWidth={(index: number) => {
           const { width } = mergedColumns[index];
-          return totalHeight > (scroll?.y as number) && index === mergedColumns.length - 1
+          return totalHeight > (scroll?.y as number) &&
+            index === mergedColumns.length - 1
             ? (width as number) - scrollbarSize - 1
             : (width as number);
         }}
@@ -86,18 +91,23 @@ const VirtualTable = <RecordType extends object>(props: TableProps<RecordType>) 
           style: React.CSSProperties;
         }) => (
           <div
-            className={classNames('virtual-table-cell', {
-              'virtual-table-cell-last': columnIndex === mergedColumns.length - 1,
+            className={classNames("virtual-table-cell", {
+              "virtual-table-cell-last":
+                columnIndex === mergedColumns.length - 1,
             })}
             style={{
               ...style,
-              boxSizing: 'border-box',
+              boxSizing: "border-box",
               padding: token.padding,
               borderBottom: `${token.lineWidth}px ${token.lineType} ${token.colorSplit}`,
               background: token.colorBgContainer,
             }}
           >
-            {(rawData[rowIndex] as any)[(mergedColumns as any)[columnIndex].dataIndex]}
+            {
+              (rawData[rowIndex] as any)[
+                (mergedColumns as any)[columnIndex].dataIndex
+              ]
+            }
           </div>
         )}
       </Grid>
@@ -123,22 +133,25 @@ const VirtualTable = <RecordType extends object>(props: TableProps<RecordType>) 
   );
 };
 
-// Usage
-const columns = [
-  { title: 'A', dataIndex: 'key' },
-  { title: 'B', dataIndex: 'key' },
-  { title: 'C', dataIndex: 'key' },
-  { title: 'D', dataIndex: 'key' },
-  { title: 'E', dataIndex: 'key' },
-  { title: 'F', dataIndex: 'key' },
-];
 
-const data = Array.from({ length: 100000 }, (_, key) => ({ key }));
 
-export function MyTable() {
+export interface IMyTable {
+  formColumns: {
+    title: string;
+    dataIndex: string;
+  }[] | undefined;
+
+  formData: { [key: string]: string }[] | undefined;
+}
+
+export function MyTable(props: IMyTable): JSX.Element {
   return (
     <>
-      <VirtualTable columns={columns} dataSource={data} scroll={{ y: 470, x: '10vw' }} />
+      <VirtualTable
+        columns={props.formColumns}
+        dataSource={props.formData}
+        scroll={{ y: 300, x: "10vw" }}
+      />
     </>
-  )
+  );
 }
