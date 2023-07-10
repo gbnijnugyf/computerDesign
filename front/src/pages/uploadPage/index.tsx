@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { CheckCircleOutlined, InboxOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
 import { Button, Modal, Progress, Tag, Upload, message } from 'antd';
-import { BASEURL, IGlobalResponse } from '../../service';
+import { BASEURL, IGlobalResponse, Service } from '../../service';
 import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 
 
@@ -35,7 +35,14 @@ export function UploadPage() {
         )
     }
     function tagOnClose() {
-        setUpFileName({ fileName: "", isFirst: true })
+        
+        Service.deleteForm(upFileName.fileName).then(()=>{
+            message.success("删除成功")
+        }).catch(()=>{
+            message.error("删除失败")
+        })
+        setUpFileName({ fileName: "", isFirst: true });
+        setProgress(0);
     }
 
     async function customRequest(data: any) {

@@ -1,4 +1,4 @@
-package router
+package routes
 
 import (
 	"back/middleware"
@@ -63,7 +63,7 @@ func SetRouter() *gin.Engine {
 
 	})
 
-	//err := router.Run(":8080")
+	//err := routes.Run(":8080")
 	//
 	//if err != nil {
 	//	fmt.Println("服务器启动失败！")

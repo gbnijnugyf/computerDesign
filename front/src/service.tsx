@@ -1,9 +1,9 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { IMyTable } from "./component/Mytable";
 
-export const BASEURL = "http://127.0.0.1:4523/m1/2947154-0-default";
+// export const BASEURL = "http://127.0.0.1:4523/m1/2947154-0-default";
 // export const BASEURL_MOCK = "http://localhost:8080";
-// export const BASEURL = "http://localhost:8080";
+export const BASEURL = "http://localhost:8080";
 
 // 返回响应中data的类型
 export interface IGlobalResponse<T> {
@@ -12,15 +12,21 @@ export interface IGlobalResponse<T> {
   status: number;
 }
 
-interface IPostSpeechText{
-  text:string
+interface IPostSpeechText {
+  text: string
+}
+function appendParams2Path(
+  path: string,
+  paramsRaw: string | URLSearchParams | string[][] | Record<string, string>
+) {
+  const params = new URLSearchParams(paramsRaw);
+  return `${path}?${params.toString()}`;
 }
 
-
 async function GlobalAxios<T = any, D = any>(
-  method: "post",
+  method: "post" | "get" | "delete",
   url: string,
-  data: D
+  data?: D
 ): Promise<AxiosResponse<IGlobalResponse<T>, any>> {
 
 
@@ -33,10 +39,16 @@ async function GlobalAxios<T = any, D = any>(
   const params = new URLSearchParams(parsedURL.searchParams || "");
   //   url = parsedURL.pathname || "";
   config.params = params;
-  let response;
 
-  //axios将data自动序列化为json格式
-  response = await axios[method]<IGlobalResponse<T>>(url, data, config)
+  let response;
+  if (method === "post") {
+    //axios将data自动序列化为json格式
+    response = await axios[method]<IGlobalResponse<T>>(url, data, config);
+  } else {
+    params.set("time", new Date().getTime().toString());
+    response = await axios[method]<IGlobalResponse<T>>(url, config);
+  }
+
 
   if (response.statusText === "OK") {
     return response;
@@ -60,6 +72,12 @@ export const Service = {
   //发送语音文本信息
   postSpeechText(props: IPostSpeechText) {
     return GlobalAxios<string, IPostSpeechText>("post", "/postspeech", props);
+  },
+
+  //删除表格
+  deleteForm(props: string) {
+    return GlobalAxios<string>("delete",
+      appendParams2Path("/deleteform", { fileName: props }))
   }
 };
 
