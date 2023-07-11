@@ -6,14 +6,18 @@ import { BASEURL, IGlobalResponse, Service } from '../../service';
 import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 
 
-interface IUpFileName {
+export interface IUpFileName {
     fileName: string;
     isFirst: boolean
 }
+export interface IUpFileHandle {
+    fileName: IUpFileName;
+    setFileName: React.Dispatch<React.SetStateAction<IUpFileName>>
+}
 
-export function UploadPage() {
+export function UploadPage(upFileHandle: IUpFileHandle) {
     const [progress, setProgress] = useState<number>(0);
-    const [upFileName, setUpFileName] = useState<IUpFileName>({ fileName: "", isFirst: true });
+    // const [upFileName, setUpFileName] = useState<IUpFileName>({ fileName: "", isFirst: true });
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const acceptType = ["xlsx", "xls", "csv"];
     function isAcceptedType(type: string): boolean {
@@ -35,18 +39,18 @@ export function UploadPage() {
         )
     }
     function tagOnClose() {
-        
-        Service.deleteForm(upFileName.fileName).then(()=>{
+
+        Service.deleteForm(upFileHandle.fileName.fileName).then(() => {
             message.success("删除成功")
-        }).catch(()=>{
+        }).catch(() => {
             message.error("删除失败")
         })
-        setUpFileName({ fileName: "", isFirst: true });
+        upFileHandle.setFileName({ fileName: "", isFirst: true });
         setProgress(0);
     }
 
     async function customRequest(data: any) {
-        if (upFileName.isFirst !== true) {
+        if (upFileHandle.fileName.isFirst !== true) {
             setIsModalOpen(true);
             return;
         }
@@ -55,7 +59,6 @@ export function UploadPage() {
         const fileNameSplit = fileName.split('.');
         const fileType = fileNameSplit[fileNameSplit.length - 1];
         if (isAcceptedType(fileType)) {
-            setUpFileName({ fileName: fileName, isFirst: false })
             const form = new FormData();
             form.append('file', data.file);
             console.log(form)
@@ -80,6 +83,7 @@ export function UploadPage() {
 
             await axios["post"]<IGlobalResponse<string>>("/postformdata", form, config).then((res) => {
                 console.log(res)
+                upFileHandle.setFileName({ fileName: fileName, isFirst: false })
                 message.success(`${fileName} file uploaded successfully.`);
             }).catch(() => {
                 message.error(`NetWork Error`);
@@ -112,7 +116,7 @@ export function UploadPage() {
 
     return (
         <>
-            {upFileName.fileName === "" ? null : <Tag closable icon={<CheckCircleOutlined />} color="success" onClose={tagOnClose}>{upFileName.fileName}</Tag>}
+            {upFileHandle.fileName.fileName === "" ? null : <Tag closable icon={<CheckCircleOutlined />} color="success" onClose={tagOnClose}>{upFileHandle.fileName.fileName}</Tag>}
             <Modal title="提示" open={isModalOpen} footer={modalFooter()} >
                 <p>您还有已上传的文件未删除哦，请删除后再上传新的文件</p>
             </Modal>

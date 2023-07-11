@@ -60,8 +60,8 @@ async function GlobalAxios<T = any, D = any>(
 
 export const Service = {
   //获取表格
-  getForm() {
-    return GlobalAxios<IMyTable>("post", "/getformdata", null);
+  getForm(props:string) {
+    return GlobalAxios<IMyTable>("post", "/getformdata", { fileName: props });
   },
 
   //上传表格-为了实现进度条，在Service外部实现

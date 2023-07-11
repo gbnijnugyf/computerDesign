@@ -5,13 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="afbb33fc-1379-4e4a-a806-4711260dc9a3" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/controller/form/handleform.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controller/form/handleformdata.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/formdata/BeijingPM20100101_20151231.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routes/router.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/dynamicStruct.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/formdata/GuangzhouPM20100101_20151231 - 副本.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/formdata/ShenyangPM20100101_20151231.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/form/handleformdata.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/form/handleformdata.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/formdata/BeijingPM20100101_20151231.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/routes/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front/src/component/Mytable/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/component/Mytable/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front/src/pages/displayPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/pages/displayPage/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front/src/pages/uploadPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/pages/uploadPage/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front/src/router.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/router.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front/src/service.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/service.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +35,9 @@
   <component name="GOROOT" url="file://$PROJECT_DIR$/../../../bianyiqi/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2SK9KJhmuq5TWB207D8DBwhX4UR" />
   <component name="ProjectLevelVcsManager">

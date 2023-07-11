@@ -1,61 +1,46 @@
-import { Button, Layout } from "antd";
+import { Button, Layout, message } from "antd";
 import { IMyTable, MyTable } from "../../component/Mytable";
 import { useState } from "react";
 import { Service } from "../../service";
 import { Speech } from "../../component/Speech";
+import { IUpFileHandle } from "../uploadPage";
 
 const formInit: IMyTable = {
-  formColumns: [
-    { title: "", dataIndex: "key" },
-    { title: "", dataIndex: "key" },
-    { title: "", dataIndex: "key" },
-    { title: "", dataIndex: "key" },
-    { title: "", dataIndex: "key" },
+  formCol: [
     { title: "", dataIndex: "key" },
   ],
   formData: undefined,
 };
-export function DisplayPage() {
+export function DisplayPage(upFileHandle: IUpFileHandle) {
   const [form, setForm] = useState<IMyTable>(formInit);
   const [isLoad, setIsLoad] = useState<boolean>(false);
-  const col = [
-    {
-      title: "姓名",
-      dataIndex: "name",
-    },
-    {
-      title: "年龄",
-      dataIndex: "age",
-    },
-    {
-      title: "QQ号",
-      dataIndex: "qq",
-    },
-    {
-      title: "手机号",
-      dataIndex: "phone",
-    },
-    {
-      title: "所在城市",
-      dataIndex: "city",
-    },
-  ];
+
+  function getFormBtn(){
+    setIsLoad(true);
+    if (upFileHandle.fileName.fileName === "") {
+      message.error("请先上传文件");
+      setIsLoad(false);
+      return;
+    }
+    Service.getForm(upFileHandle.fileName.fileName).then((res) => {
+      console.log(res.data.data)
+      const formData: IMyTable = {
+        formCol: res.data.data.formCol,
+        formData: res.data.data.formData
+      };
+      // // formData.formColumns = col;
+      console.log(formData);
+      setIsLoad(false);
+      setForm(formData);
+    });
+  }
 
   return (
     <Layout>
       <Speech />
-      <MyTable formColumns={form?.formColumns} formData={form?.formData} />
+      <MyTable formCol={form?.formCol} formData={form?.formData} />
       <Button
-        onClick={() => {
-          setIsLoad(true);
-          Service.getForm().then((res) => {
-            const formData: IMyTable = res.data.data;
-            formData.formColumns = col;
-            console.log(formData);
-            setIsLoad(false);
-            setForm(formData);
-          });
-        }}
+        onClick={getFormBtn}
         loading={isLoad}
       >
         获取表格信息

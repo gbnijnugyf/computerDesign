@@ -136,10 +136,10 @@ const VirtualTable = <RecordType extends object>(
 
 
 export interface IMyTable {
-  formColumns: {
+  formCol: {
     title: string;
     dataIndex: string;
-  }[] | undefined;
+  }[];
 
   formData: { [key: string]: string }[] | undefined;
 }
@@ -148,9 +148,9 @@ export function MyTable(props: IMyTable): JSX.Element {
   return (
     <>
       <VirtualTable
-        columns={props.formColumns}
+        columns={props.formCol}
         dataSource={props.formData}
-        scroll={{ y: 300, x: "10vw" }}
+        scroll={{ y: 500, x: "10vw" }}
       />
     </>
   );

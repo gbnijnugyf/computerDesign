@@ -1,14 +1,23 @@
 package routes
 
 import (
+	"back/controller/form"
 	"back/middleware"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"os"
 )
 
 type User struct {
 	Text string `json:"text"`
+}
+type fileName struct {
+	FileName string `json:"fileName"`
+}
+type formDataType struct {
+	FormData []map[string]string `json:"formData"`
+	FormCol  []form.FormColItem  `json:"formCol"`
 }
 
 func SetRouter() *gin.Engine {
@@ -60,7 +69,54 @@ func SetRouter() *gin.Engine {
 				"data":   "upload failed",
 			})
 		}
+	})
 
+	router.POST("/getformdata", func(c *gin.Context) {
+		var jsons fileName
+		err := c.ShouldBind(&jsons)
+		filePath := "./formdata/" + jsons.FileName
+		if err == nil {
+			fmt.Println(filePath)
+
+			formDatas, formCols, isRead := form.ReadCsv(filePath)
+			if isRead == true {
+				var data = formDataType{FormData: formDatas, FormCol: formCols}
+				c.JSON(http.StatusOK, gin.H{
+					"msg":    "succeed",
+					"status": 1,
+					"data":   data,
+				})
+			} else {
+				c.JSON(http.StatusOK, gin.H{
+					"msg":    "failed",
+					"status": 1,
+					"data":   nil,
+				})
+			}
+
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"msg":    "failed",
+				"status": 0,
+				"data":   "failed",
+			})
+		}
+	})
+
+	router.DELETE("/deleteform", func(c *gin.Context) {
+		//var json fileName
+		str, ok := c.GetQuery("fileName")
+		if ok == true {
+			fmt.Printf("%v\n", str)
+			err := os.Remove("formdata/" + str)
+			if err == nil {
+				c.JSON(http.StatusOK, gin.H{
+					"msg":    "succeed",
+					"status": 1,
+					"data":   "delete succeed",
+				})
+			}
+		}
 	})
 
 	//err := routes.Run(":8080")
