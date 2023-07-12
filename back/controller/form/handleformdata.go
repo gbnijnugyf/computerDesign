@@ -1,7 +1,12 @@
 package form
 
 import (
+	"bytes"
 	"encoding/csv"
+	"fmt"
+	"github.com/xuri/excelize/v2"
+	"golang.org/x/text/encoding/simplifiedchinese"
+	"golang.org/x/text/transform"
 	"io"
 	"os"
 )
@@ -23,7 +28,11 @@ func ReadCsv(filepath string) ([]map[string]string, []FormColItem, bool) {
 		return nil, nil, false
 	}
 	defer file.Close()
-	reader := csv.NewReader(file)
+
+	buff := new(bytes.Buffer)
+	_, _ = io.Copy(buff, file)
+
+	reader := csv.NewReader(transform.NewReader(bytes.NewReader(buff.Bytes()), simplifiedchinese.GBK.NewDecoder()))
 
 	var formCol []FormColItem
 	var formData []map[string]string
@@ -38,6 +47,7 @@ func ReadCsv(filepath string) ([]map[string]string, []FormColItem, bool) {
 			//c.String(400, err.Error())
 			//return
 		}
+
 		if isFistLine {
 			for item := range line {
 				formCol = append(formCol, FormColItem{line[item], line[item]})
@@ -90,53 +100,60 @@ func ReadCsv(filepath string) ([]map[string]string, []FormColItem, bool) {
 //	return record
 //}
 
-//func ReadXls(file_path string) (res [][]string) {
-//	if xlFile, err := xls.Open(file_path, "utf-8"); err == nil {
-//		fmt.Println(xlFile.Author)
-//		//第一个sheet
-//		sheet := xlFile.GetSheet(0)
-//		if sheet.MaxRow != 0 {
-//			temp := make([][]string, sheet.MaxRow)
-//			for i := 0; i < int(sheet.MaxRow); i++ {
-//				row := sheet.Row(i)
-//				data := make([]string, 0)
-//				if row.LastCol() > 0 {
-//					for j := 0; j < row.LastCol(); j++ {
-//						col := row.Col(j)
-//						data = append(data, col)
-//					}
-//					temp[i] = data
-//				}
-//			}
-//			res = append(res, temp...)
-//		}
-//	} else {
-//		Logger.Errorf("open_err:", err)
-//	}
-//	return res
-//}
-//
-//func ReadXlsx(file_path string) (res [][]string) {
-//	if xlFile, err := xlsx.OpenFile(file_path); err == nil {
-//		for index, sheet := range xlFile.Sheets {
+//	func ReadXls(file_path string) (res [][]string) {
+//		if xlFile, err := xls.Open(file_path, "utf-8"); err == nil {
+//			fmt.Println(xlFile.Author)
 //			//第一个sheet
-//			if index == 0 {
-//				temp := make([][]string, len(sheet.Rows))
-//				for k, row := range sheet.Rows {
-//					var data []string
-//					for _, cell := range row.Cells {
-//						data = append(data, cell.Value)
+//			sheet := xlFile.GetSheet(0)
+//			if sheet.MaxRow != 0 {
+//				temp := make([][]string, sheet.MaxRow)
+//				for i := 0; i < int(sheet.MaxRow); i++ {
+//					row := sheet.Row(i)
+//					data := make([]string, 0)
+//					if row.LastCol() > 0 {
+//						for j := 0; j < row.LastCol(); j++ {
+//							col := row.Col(j)
+//							data = append(data, col)
+//						}
+//						temp[i] = data
 //					}
-//					temp[k] = data
 //				}
 //				res = append(res, temp...)
 //			}
+//		} else {
+//			Logger.Errorf("open_err:", err)
 //		}
-//	} else {
-//		Logger.Errorf("open_err:", err)
+//		return res
 //	}
-//	return res
-//}
+func ReadXlsx(filePath string) /*(res [][]string)*/ {
+
+	f, err := excelize.OpenFile(filePath)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	// Get value from cell by given worksheet name and axis.
+	//cell, err := f.GetCellValue("Sheet1", "B2")
+	//if err != nil {
+	//	fmt.Println(err)
+	//	return
+	//}
+	//fmt.Println(cell)
+
+	// Get all the rows in the SheetList.
+	sheetList := f.GetSheetList()
+	rows, err := f.GetRows(sheetList[1])
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	for _, row := range rows {
+		for _, colCell := range row {
+			fmt.Print(colCell, "\t")
+		}
+		fmt.Println()
+	}
+}
 
 // 校验中文编码
 func ValidUTF8(buf []byte) bool {
