@@ -3,26 +3,20 @@ import { IMyTable, MyTable } from "../../component/Mytable";
 import { useState } from "react";
 import { Service } from "../../service";
 import { Speech } from "../../component/Speech";
-import { IUpFileHandle } from "../uploadPage";
+import { IDisplayUploadHooks } from "../../props&interface/commonHook";
 
-const formInit: IMyTable = {
-  formCol: [
-    { title: "", dataIndex: "key" },
-  ],
-  formData: undefined,
-};
-export function DisplayPage(upFileHandle: IUpFileHandle) {
-  const [form, setForm] = useState<IMyTable>(formInit);
+
+export function DisplayPage(handleHook: IDisplayUploadHooks) {
   const [isLoad, setIsLoad] = useState<boolean>(false);
 
-  function getFormBtn(){
+  function getFormBtn() {
     setIsLoad(true);
-    if (upFileHandle.fileName.fileName === "") {
+    if (handleHook.upFileHandle.fileName.fileName === "") {
       message.error("请先上传文件");
       setIsLoad(false);
       return;
     }
-    Service.getForm(upFileHandle.fileName.fileName).then((res) => {
+    Service.getForm(handleHook.upFileHandle.fileName.fileName).then((res) => {
       console.log(res.data.data)
       const formData: IMyTable = {
         formCol: res.data.data.formCol,
@@ -31,19 +25,19 @@ export function DisplayPage(upFileHandle: IUpFileHandle) {
       // // formData.formColumns = col;
       console.log(formData);
       setIsLoad(false);
-      setForm(formData);
+      handleHook.displayHandle.setForm(formData);
     });
   }
 
   return (
     <Layout>
       <Speech />
-      <MyTable formCol={form?.formCol} formData={form?.formData} />
+      <MyTable formCol={handleHook.displayHandle.form?.formCol} formData={handleHook.displayHandle.form?.formData} />
       <Button
         onClick={getFormBtn}
         loading={isLoad}
       >
-        获取表格信息
+        获取{handleHook.upFileHandle.fileName.fileName}的表格信息
       </Button>
     </Layout>
   );

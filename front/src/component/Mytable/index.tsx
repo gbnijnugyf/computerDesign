@@ -5,9 +5,9 @@ import ResizeObserver from "rc-resize-observer";
 import React, { useEffect, useRef, useState } from "react";
 import { VariableSizeGrid as Grid } from "react-window";
 
-const VirtualTable = <RecordType extends object>(
+function VirtualTable<RecordType extends object>(
   props: TableProps<RecordType>
-) => {
+) {
   const { columns, scroll } = props;
   const [tableWidth, setTableWidth] = useState(0);
   const { token } = theme.useToken();
@@ -54,10 +54,10 @@ const VirtualTable = <RecordType extends object>(
 
   useEffect(() => resetVirtualGrid, [tableWidth]);
 
-  const renderVirtualList = (
+  function renderVirtualList(
     rawData: readonly object[],
     { scrollbarSize, ref, onScroll }: any
-  ) => {
+  ) {
     ref.current = connectObject;
     const totalHeight = rawData.length * 54;
 
@@ -105,7 +105,7 @@ const VirtualTable = <RecordType extends object>(
           >
             {
               (rawData[rowIndex] as any)[
-                (mergedColumns as any)[columnIndex].dataIndex
+              (mergedColumns as any)[columnIndex].dataIndex
               ]
             }
           </div>

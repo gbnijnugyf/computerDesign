@@ -4,6 +4,7 @@ import type { UploadProps } from 'antd';
 import { Button, Modal, Progress, Tag, Upload, message } from 'antd';
 import { BASEURL, IGlobalResponse, Service } from '../../service';
 import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
+import { IDisplayUploadHooks } from '../../props&interface/commonHook';
 
 
 export interface IUpFileName {
@@ -15,7 +16,7 @@ export interface IUpFileHandle {
     setFileName: React.Dispatch<React.SetStateAction<IUpFileName>>
 }
 
-export function UploadPage(upFileHandle: IUpFileHandle) {
+export function UploadPage(handleHook: IDisplayUploadHooks) {
     const [progress, setProgress] = useState<number>(0);
     // const [upFileName, setUpFileName] = useState<IUpFileName>({ fileName: "", isFirst: true });
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -40,17 +41,17 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
     }
     function tagOnClose() {
 
-        Service.deleteForm(upFileHandle.fileName.fileName).then(() => {
+        Service.deleteForm(handleHook.upFileHandle.fileName.fileName).then(() => {
             message.success("删除成功")
         }).catch(() => {
             message.error("删除失败")
         })
-        upFileHandle.setFileName({ fileName: "", isFirst: true });
+        handleHook.upFileHandle.setFileName({ fileName: "", isFirst: true });
         setProgress(0);
     }
 
     async function customRequest(data: any) {
-        if (upFileHandle.fileName.isFirst !== true) {
+        if (handleHook.upFileHandle.fileName.isFirst !== true) {
             setIsModalOpen(true);
             return;
         }
@@ -83,7 +84,7 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
 
             await axios["post"]<IGlobalResponse<string>>("/postformdata", form, config).then((res) => {
                 console.log(res)
-                upFileHandle.setFileName({ fileName: fileName, isFirst: false })
+                handleHook.upFileHandle.setFileName({ fileName: fileName, isFirst: false })
                 message.success(`${fileName} file uploaded successfully.`);
             }).catch(() => {
                 message.error(`NetWork Error`);
@@ -116,7 +117,7 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
 
     return (
         <>
-            {upFileHandle.fileName.fileName === "" ? null : <Tag closable icon={<CheckCircleOutlined />} color="success" onClose={tagOnClose}>{upFileHandle.fileName.fileName}</Tag>}
+            {handleHook.upFileHandle.fileName.fileName === "" ? null : <Tag closable icon={<CheckCircleOutlined />} color="success" onClose={tagOnClose}>{handleHook.upFileHandle.fileName.fileName}</Tag>}
             <Modal title="提示" open={isModalOpen} footer={modalFooter()} >
                 <p>您还有已上传的文件未删除哦，请删除后再上传新的文件</p>
             </Modal>
