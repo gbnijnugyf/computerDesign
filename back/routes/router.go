@@ -14,6 +14,7 @@ type User struct {
 }
 type fileName struct {
 	FileName string `json:"fileName"`
+	FileType string `json:"fileType"`
 }
 type formDataType struct {
 	FormData []map[string]string `json:"formData"`
@@ -78,7 +79,7 @@ func SetRouter() *gin.Engine {
 		if err == nil {
 			fmt.Println(filePath)
 
-			formDatas, formCols, isRead := form.ReadCsv(filePath)
+			formDatas, formCols, isRead := form.HandleForm(filePath, jsons.FileType)
 			if isRead == true {
 				var data = formDataType{FormData: formDatas, FormCol: formCols}
 				c.JSON(http.StatusOK, gin.H{

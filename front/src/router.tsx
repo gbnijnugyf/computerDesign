@@ -14,7 +14,7 @@ export function Routers() {
     ],
     formData: undefined,
   };
-  const [upFileName, setUpFileName] = useState<IUpFileName>({ fileName: "", isFirst: true });
+  const [upFileName, setUpFileName] = useState<IUpFileName>({ fileName: "", fileType:"", isFirst: true });
   const [form, setForm] = useState<IMyTable>(formInit);
 
   const upFileHandles: IUpFileHandle = {

@@ -1,0 +1,8 @@
+.img-form{
+    height: 35vh;
+    background-repeat: no-repeat;
+    background-image: url("../../static/formMode.png");
+}
+.dragger{
+    height: 500vh;
+}

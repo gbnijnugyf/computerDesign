@@ -16,7 +16,7 @@ export function DisplayPage(handleHook: IDisplayUploadHooks) {
       setIsLoad(false);
       return;
     }
-    Service.getForm(handleHook.upFileHandle.fileName.fileName).then((res) => {
+    Service.getForm(handleHook.upFileHandle.fileName).then((res) => {
       console.log(res.data.data)
       const formData: IMyTable = {
         formCol: res.data.data.formCol,
@@ -30,7 +30,7 @@ export function DisplayPage(handleHook: IDisplayUploadHooks) {
   }
 
   return (
-    <Layout>
+    <Layout style={{padding:"0", margin:"0"}}>
       <Speech />
       <MyTable formCol={handleHook.displayHandle.form?.formCol} formData={handleHook.displayHandle.form?.formData} />
       <Button

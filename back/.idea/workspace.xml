@@ -5,11 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="afbb33fc-1379-4e4a-a806-4711260dc9a3" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/formdata/附件1 报警数据集.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../front/src/pages/uploadPage/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../front/src/static/formMode.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/form/handleform.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/controller/form/handleformdata.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/form/handleformdata.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/formdata/BeijingPM20100101_20151231.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/formdata/ChengduPM20100101_20151231.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/formdata/form_2 - 副本.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/formdata/form_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/formdata/form_2.xlsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/routes/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front/src/component/Mytable/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/component/Mytable/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front/src/pages/displayPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/pages/displayPage/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front/src/pages/uploadPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/pages/uploadPage/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front/src/router.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/router.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front/src/service.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/service.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,12 +68,29 @@
   }
 }</component>
   <component name="RunManager">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="back" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="back" />
       <working_directory value="$PROJECT_DIR$" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$/main/main.go" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="back" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
       <method v="2" />
     </configuration>
     <recent_temporary>

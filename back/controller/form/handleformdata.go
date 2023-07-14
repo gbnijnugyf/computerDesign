@@ -9,6 +9,7 @@ import (
 	"golang.org/x/text/transform"
 	"io"
 	"os"
+	"time"
 )
 
 type FormColItem struct {
@@ -17,6 +18,19 @@ type FormColItem struct {
 }
 type formDataItem struct {
 	Attr map[string]interface{}
+}
+
+func HandleForm(filePath string, fileType string) ([]map[string]string, []FormColItem, bool) {
+	switch fileType {
+	case "csv":
+		return ReadCsv(filePath)
+	case "xlsx":
+		return ReadXlsx(filePath)
+	case "xls":
+		return ReadXlsx(filePath)
+	default:
+		return nil, nil, false
+	}
 }
 
 func ReadCsv(filepath string) ([]map[string]string, []FormColItem, bool) {
@@ -125,12 +139,14 @@ func ReadCsv(filepath string) ([]map[string]string, []FormColItem, bool) {
 //		}
 //		return res
 //	}
-func ReadXlsx(filePath string) /*(res [][]string)*/ {
+func ReadXlsx(filePath string) ([]map[string]string, []FormColItem, bool) {
+	startTime := time.Now()
 
 	f, err := excelize.OpenFile(filePath)
 	if err != nil {
 		fmt.Println(err)
-		return
+
+		return nil, nil, false
 	}
 	// Get value from cell by given worksheet name and axis.
 	//cell, err := f.GetCellValue("Sheet1", "B2")
@@ -142,17 +158,42 @@ func ReadXlsx(filePath string) /*(res [][]string)*/ {
 
 	// Get all the rows in the SheetList.
 	sheetList := f.GetSheetList()
-	rows, err := f.GetRows(sheetList[1])
+	var sheetNum int = 0
+	lines, err := f.GetRows(sheetList[sheetNum])
 	if err != nil {
 		fmt.Println(err)
-		return
+		return nil, nil, false
 	}
-	for _, row := range rows {
-		for _, colCell := range row {
-			fmt.Print(colCell, "\t")
+
+	var isFirstLine bool = true
+	var formCol []FormColItem
+	var formData []map[string]string
+	var structMode map[string]string
+
+	for _, line := range lines {
+		if isFirstLine {
+			for item := range line {
+				formCol = append(formCol, FormColItem{line[item], line[item]})
+			}
+			isFirstLine = false
+		} else {
+			structMode = make(map[string]string)
+			for i := range formCol {
+				structMode[formCol[i].DataIndex] = line[i]
+			}
+			formData = append(formData, structMode)
 		}
-		fmt.Println()
+
+		//for _, colCell := range line {
+		//	fmt.Print(colCell, "\t")
+		//}
+		//fmt.Println()
 	}
+	//程序段计时
+	elapsedTime := time.Since(startTime) / time.Millisecond // duration in ms
+	fmt.Printf("Segment finished in %d ms", elapsedTime)    //Segment finished in xxms
+
+	return formData, formCol, true
 }
 
 // 校验中文编码
