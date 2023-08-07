@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CheckCircleOutlined, InboxOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd";
 import { Progress, Tag, Upload, message } from "antd";
@@ -17,6 +17,7 @@ export interface IUpFileHandle {
 
 export function UploadPage(upFileHandle: IUpFileHandle) {
   const [progress, setProgress] = useState<number>(0);
+  const [switchEffect, setSwitchEffect] = useState<boolean>(true)
   // const [upFileName, setUpFileName] = useState<IUpFileName>({ fileName: "", isFirst: true });
   // const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const acceptType = ["jpg", "png", "jpeg"];
@@ -55,7 +56,7 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
     //     setIsModalOpen(true);
     //     return;
     // }
-    console.log(data);
+    console.log(upFileHandle.fileArr);
     const fileName: string = data.file.name;
     const fileNameSplit = fileName.split(".");
     const fileType = fileNameSplit[fileNameSplit.length - 1];
@@ -88,6 +89,7 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
           tempArr.push({ fileName: fileName, fileType: fileType });
           upFileHandle.setFileArr(tempArr);
           message.success(`${fileName} file uploaded successfully.`);
+          setSwitchEffect(!switchEffect)
         })
         .catch(() => {
           message.error(`NetWork Error`);
@@ -115,27 +117,35 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
     //     setUpFileName(file.name)
     // },
   };
+  const [tagsClass, setTagsClass] = useState<JSX.Element[]>();
+  useEffect(() => {
+    //当文件数组发生变化时重新渲染tag组件
+    if (upFileHandle.fileArr.length > 0) {
+        console.log(upFileHandle.fileArr.length)
+      setTagsClass(
+        upFileHandle.fileArr.map((item) => {
+          if (item.fileName === "") {
+            return <></>;
+          } else {
+            return (
+              <Tag
+                closable
+                icon={<CheckCircleOutlined />}
+                color="success"
+                // onClose={tagOnClose}
+              >
+                {item.fileName}
+              </Tag>
+            );
+          }
+        })
+      );
+    }
+  }, [upFileHandle,switchEffect]);
 
   return (
     <>
-      {upFileHandle.fileArr.length === 1
-        ? null
-        : upFileHandle.fileArr.map((item) => {
-            if (item.fileName === "") {
-              return <></>;
-            } else {
-              return (
-                <Tag
-                  closable
-                  icon={<CheckCircleOutlined />}
-                  color="success"
-                  // onClose={tagOnClose}
-                >
-                  {item.fileName}
-                </Tag>
-              );
-            }
-          })}
+      {tagsClass}
       {/* <Modal title="提示" open={isModalOpen} footer={modalFooter()} >
                 <p>您还有已上传的文件未删除哦，请删除后再上传新的文件</p>
             </Modal> */}
