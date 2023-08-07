@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { CheckCircleOutlined, InboxOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
-import { Button, Modal, Progress, Tag, Upload, message } from 'antd';
+import { Progress, Tag, Upload, message } from 'antd';
 import { BASEURL, IGlobalResponse, Service } from '../../service';
 import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 
 
 export interface IUpFileName {
     fileName: string;
-    isFirst: boolean
+    fileType:string;
+    // isFirst: boolean
 }
 export interface IUpFileHandle {
     fileName: IUpFileName;
@@ -18,8 +19,8 @@ export interface IUpFileHandle {
 export function UploadPage(upFileHandle: IUpFileHandle) {
     const [progress, setProgress] = useState<number>(0);
     // const [upFileName, setUpFileName] = useState<IUpFileName>({ fileName: "", isFirst: true });
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const acceptType = ["xlsx", "xls", "csv"];
+    // const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const acceptType = ["jpg", "png", "jpeg"];  
     function isAcceptedType(type: string): boolean {
         let flag: boolean = false;
         acceptType.forEach((t) => {
@@ -29,15 +30,15 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
         })
         return flag;
     }
-    function modalFooter() {
-        return (
-            <Button onClick={() => {
-                setIsModalOpen(false);
-            }}>
-                我知道了
-            </Button>
-        )
-    }
+    // function modalFooter() {
+    //     return (
+    //         <Button onClick={() => {
+    //             setIsModalOpen(false);
+    //         }}>
+    //             我知道了
+    //         </Button>
+    //     )
+    // }
     function tagOnClose() {
 
         Service.deleteForm(upFileHandle.fileName.fileName).then(() => {
@@ -45,15 +46,15 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
         }).catch(() => {
             message.error("删除失败")
         })
-        upFileHandle.setFileName({ fileName: "", isFirst: true });
+        upFileHandle.setFileName({ fileName: "", fileType:""});
         setProgress(0);
     }
 
     async function customRequest(data: any) {
-        if (upFileHandle.fileName.isFirst !== true) {
-            setIsModalOpen(true);
-            return;
-        }
+        // if (upFileHandle.fileName.isFirst !== true) {
+        //     setIsModalOpen(true);
+        //     return;
+        // }
         console.log(data)
         const fileName: string = data.file.name;
         const fileNameSplit = fileName.split('.');
@@ -70,11 +71,6 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
             const params = new URLSearchParams(parsedURL.searchParams || "");
             config.params = params;
 
-            // config.headers = {
-            //     "Content-Type":"application/x-www-form-urlencoded",
-            //     "charset": "UTF-8"
-            // }
-
             config.onUploadProgress = (progress: AxiosProgressEvent) => {
                 if (progress.total) {
                     setProgress(Math.floor(progress.loaded / progress.total * 100));
@@ -83,7 +79,7 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
 
             await axios["post"]<IGlobalResponse<string>>("/postformdata", form, config).then((res) => {
                 console.log(res)
-                upFileHandle.setFileName({ fileName: fileName, isFirst: false })
+                upFileHandle.setFileName({ fileName: fileName, fileType:fileType})
                 message.success(`${fileName} file uploaded successfully.`);
             }).catch(() => {
                 message.error(`NetWork Error`);
@@ -100,7 +96,7 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
 
     const props: UploadProps = {
         name: 'file',
-        multiple: false,
+        multiple: true,
         showUploadList: false,
         onChange: () => {
             // if (upFileName !== "") {
@@ -117,9 +113,9 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
     return (
         <>
             {upFileHandle.fileName.fileName === "" ? null : <Tag closable icon={<CheckCircleOutlined />} color="success" onClose={tagOnClose}>{upFileHandle.fileName.fileName}</Tag>}
-            <Modal title="提示" open={isModalOpen} footer={modalFooter()} >
+            {/* <Modal title="提示" open={isModalOpen} footer={modalFooter()} >
                 <p>您还有已上传的文件未删除哦，请删除后再上传新的文件</p>
-            </Modal>
+            </Modal> */}
             <Dragger {...props}>
                 <p className="ant-upload-drag-icon">
                     <InboxOutlined />

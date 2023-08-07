@@ -7,13 +7,13 @@ import { useState } from "react";
 
 export function Routers() {
 
-  const [upFileName, setUpFileName]:[IUpFileName, React.Dispatch<React.SetStateAction<IUpFileName>>] = useState<IUpFileName>({ fileName: "", isFirst: true });
+  const [upFileName, setUpFileName]:[IUpFileName, React.Dispatch<React.SetStateAction<IUpFileName>>] = useState<IUpFileName>({ fileName: "", fileType:""});
 
   return (
     <Routes>
       <Route path="/*" element={<MainPage />}>
         <Route path="upload" element={<UploadPage fileName={upFileName} setFileName={setUpFileName} />} />
-        <Route path="display" element={<DisplayPage fileName={upFileName} setFileName={setUpFileName}/>} />
+        <Route path="display" element={<DisplayPage />} />
         <Route path="data-handle" element={<HandlePage/>} />
         <Route path="else" element={<></>} />
       </Route>

@@ -1,9 +1,9 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { IMyTable } from "./component/Mytable";
 
-// export const BASEURL = "http://127.0.0.1:4523/m1/2947154-0-default";
+export const BASEURL = "http://127.0.0.1:4523/m1/2947154-0-default";
 // export const BASEURL_MOCK = "http://localhost:8080";
-export const BASEURL = "http://localhost:8080";
+// export const BASEURL = "http://localhost:8080";
 
 // 返回响应中data的类型
 export interface IGlobalResponse<T> {

@@ -3,7 +3,7 @@ import { IMyTable, MyTable } from "../../component/Mytable";
 import { useState } from "react";
 import { Service } from "../../service";
 import { Speech } from "../../component/Speech";
-import { IUpFileHandle } from "../uploadPage";
+// import { IUpFileHandle } from "../uploadPage";
 
 const formInit: IMyTable = {
   formCol: [
@@ -11,18 +11,19 @@ const formInit: IMyTable = {
   ],
   formData: undefined,
 };
-export function DisplayPage(upFileHandle: IUpFileHandle) {
+export function DisplayPage() {
   const [form, setForm] = useState<IMyTable>(formInit);
   const [isLoad, setIsLoad] = useState<boolean>(false);
+  let fileName = ""
 
   function getFormBtn(){
     setIsLoad(true);
-    if (upFileHandle.fileName.fileName === "") {
+    if (fileName === "") {
       message.error("请先上传文件");
       setIsLoad(false);
       return;
     }
-    Service.getForm(upFileHandle.fileName.fileName).then((res) => {
+    Service.getForm(fileName).then((res) => {
       console.log(res.data.data)
       const formData: IMyTable = {
         formCol: res.data.data.formCol,
