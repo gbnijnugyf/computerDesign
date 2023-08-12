@@ -78,6 +78,7 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
         }
       };
 
+      //先加入数组，若http传输失败再移除
       let tempArr: IUpFileName[] = upFileHandle.fileArr;
       tempArr.push({ fileName: fileName, fileType: fileType });
       upFileHandle.setFileArr(tempArr);
@@ -89,13 +90,13 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
       )
         .then((res) => {
           console.log(res);
-          // let tempArr: IUpFileName[] = upFileHandle.fileArr;
-          // tempArr.push({ fileName: fileName, fileType: fileType });
-          // upFileHandle.setFileArr(tempArr);
           message.success(`${fileName} file uploaded successfully.`);
           setSwitchEffect(!switchEffect);
         })
         .catch(() => {
+          let tempArr: IUpFileName[] = upFileHandle.fileArr;
+          tempArr.pop();
+          upFileHandle.setFileArr(tempArr);
           message.error(`NetWork Error`);
         });
       return;
