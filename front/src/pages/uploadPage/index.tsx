@@ -17,7 +17,7 @@ export interface IUpFileHandle {
 
 export function UploadPage(upFileHandle: IUpFileHandle) {
   const [progress, setProgress] = useState<number>(0);
-  const [switchEffect, setSwitchEffect] = useState<boolean>(true)
+  const [switchEffect, setSwitchEffect] = useState<boolean>(true);
   // const [upFileName, setUpFileName] = useState<IUpFileName>({ fileName: "", isFirst: true });
   // const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const acceptType = ["jpg", "png", "jpeg"];
@@ -78,6 +78,10 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
         }
       };
 
+      let tempArr: IUpFileName[] = upFileHandle.fileArr;
+      tempArr.push({ fileName: fileName, fileType: fileType });
+      upFileHandle.setFileArr(tempArr);
+
       await axios["post"]<IGlobalResponse<string>>(
         "/postformdata",
         form,
@@ -85,15 +89,16 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
       )
         .then((res) => {
           console.log(res);
-          let tempArr: IUpFileName[] = upFileHandle.fileArr;
-          tempArr.push({ fileName: fileName, fileType: fileType });
-          upFileHandle.setFileArr(tempArr);
+          // let tempArr: IUpFileName[] = upFileHandle.fileArr;
+          // tempArr.push({ fileName: fileName, fileType: fileType });
+          // upFileHandle.setFileArr(tempArr);
           message.success(`${fileName} file uploaded successfully.`);
-          setSwitchEffect(!switchEffect)
+          setSwitchEffect(!switchEffect);
         })
         .catch(() => {
           message.error(`NetWork Error`);
         });
+      return;
     } else {
       message.error(`file type error!`);
       return;
@@ -121,7 +126,7 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
   useEffect(() => {
     //当文件数组发生变化时重新渲染tag组件
     if (upFileHandle.fileArr.length > 0) {
-        console.log(upFileHandle.fileArr.length)
+      console.log(upFileHandle.fileArr.length);
       setTagsClass(
         upFileHandle.fileArr.map((item) => {
           if (item.fileName === "") {
@@ -141,7 +146,7 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
         })
       );
     }
-  }, [upFileHandle,switchEffect]);
+  }, [upFileHandle, switchEffect, setSwitchEffect]);
 
   return (
     <>
