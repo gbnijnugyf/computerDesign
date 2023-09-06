@@ -147,7 +147,7 @@ export function UploadPage(upFileHandle: IUpFileHandle) {
         })
       );
     }
-  }, [upFileHandle, switchEffect, setSwitchEffect]);
+  }, [upFileHandle, switchEffect]);
 
   return (
     <>

@@ -59,6 +59,9 @@ async function GlobalAxios<T = any, D = any>(
 }
 
 export const Service = {
+  // getForm(props:string /*发送请求body类型 */) {
+  //   return GlobalAxios<IMyTable/*返回响应data类型 */>("post", "/getformdata" /*baseURL后接地址*/, { fileName: props });
+  // },
   //获取表格
   getForm(props:string) {
     return GlobalAxios<IMyTable>("post", "/getformdata", { fileName: props });
